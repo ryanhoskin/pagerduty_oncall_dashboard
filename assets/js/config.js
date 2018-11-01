@@ -1,5 +1,5 @@
 var pdjs_settings = {
-  subdomain: "pdt-ryan",
-  token: "zinNPMQB4xn3zNJX9ZWR",
+  subdomain: "pdt-jayto",
+  token: "dy96-EsNHcVAfW1z1FNH",
   refresh: 10000,
 }

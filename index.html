@@ -47,9 +47,9 @@ get_contact_methods = function(ID) {
     success: function(data){
       jQuery.each( data.contact_methods, function(index,contact_method){
         if(contact_method.type.includes("email")){
-          $("#"+ID+"_contact_methods").append('<li><strong>Email:</strong> <a href="mailto:'+contact_method.address+'">'+contact_method.address+'</a> ('+contact_method.id+')</li>');
+          $("#"+ID+"_contact_methods").append('<li><strong>Email:</strong> <a href="mailto:'+contact_method.address+'">'+contact_method.address+'</a> ('+contact_method.summary+')</li>');
         } else if (contact_method.type.includes("phone")){
-          $("#"+ID+"_contact_methods").append('<li><strong>Phone:</strong> +'+contact_method.country_code+' '+contact_method.address+' ('+contact_method.id+')</li>');
+          $("#"+ID+"_contact_methods").append('<li><strong>Phone:</strong> +'+contact_method.country_code+' '+contact_method.address+' ('+contact_method.summary+')</li>');
         }
       })
     }
