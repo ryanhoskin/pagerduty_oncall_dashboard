@@ -41,6 +41,8 @@ function format_date(my_date) {
   return String("00"+(my_date.getMonth()+1)).slice(-2)+'/'+String("00"+my_date.getDate()).slice(-2)+'/'+my_date.getFullYear()+' '+String("00"+my_date.getHours()).slice(-2)+':'+String("00"+my_date.getMinutes()).slice(-2)
 }
 
+// take the user ID - and add the email, phone, and sms contact methods to the user id
+// API call: https://v2.developer.pagerduty.com/v2/page/api-reference#!/Users/get_users_id_contact_methods
 get_contact_methods = function(ID) {
   PDJS.api({
     res:'/users/' + ID + '/contact_methods',
@@ -50,6 +52,8 @@ get_contact_methods = function(ID) {
           $("#"+ID+"_contact_methods").append('<li><strong>Email:</strong> <a href="mailto:'+contact_method.address+'">'+contact_method.address+'</a> ('+contact_method.summary+')</li>');
         } else if (contact_method.type.includes("phone")){
           $("#"+ID+"_contact_methods").append('<li><strong>Phone:</strong> +'+contact_method.country_code+' '+contact_method.address+' ('+contact_method.summary+')</li>');
+        } else if (contact_method.type.includes("sms")){
+          $("#"+ID+"_contact_methods").append('<li><strong>Sms:</strong> +'+contact_method.country_code+' '+contact_method.address+' ('+contact_method.summary+')</li>');
         }
       })
     }
@@ -80,14 +84,14 @@ update_users = function() {
           if(!user.contact_methods.length) {
             $("#"+user.id+"_contact_methods").append("<li><font color=red>No Phone or Email contact methods</font></li>")
           }
-          // make API call here https://v2.developer.pagerduty.com/v2/page/api-reference#!/Users/get_users_id_contact_methods
+          // if the user has contact method, let's get them and display them on the page
           else {
             get_contact_methods(user.id);
             
           }
         }
 
-        // always add the escalation policy
+        // always add the escalation policy that the user is on-call for
         $("#"+user.id+"_on_call").append(
           '<h4><a href=' + escalation_policy.html_url + '>'+escalation_policy.summary+'</a></h4><span class="badge">'+oncall.escalation_level+'</span>'
         )
