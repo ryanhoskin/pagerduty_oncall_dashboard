@@ -7,58 +7,37 @@
 <script src="assets/js/moment.min.js"> </script>
 <script src="assets/js/config.js"> </script>
 <script src="assets/js/pdjs.js"> </script>
-<script>
-function format_date(my_date) {
-  return String("00"+(my_date.getMonth()+1)).slice(-2)+'/'+String("00"+my_date.getDate()).slice(-2)+'/'+my_date.getFullYear()+' '+String("00"+my_date.getHours()).slice(-2)+':'+String("00"+my_date.getMinutes()).slice(-2)
+<script src="assets/js/app.js"></script>
+<style type="text/css">
+.dbinfo_header_main {
+	font-size: 45px;
+	color: red;
 }
 
-var wevedonethisbefore = false
-update_users = function() {
-  PDJS.api({
-    res: "users/on_call?include[]=contact_methods",
-    success: function(data) {
-      jQuery.each( data.users, function(index, user){
-        $("#users").append(
-          '<table border=1 bordercolor="#cccccc" dashed><tr><td><table border=0 cellpadding=3 cellspacing=0 width=440><tr><td width=80><div id="'+user.id+'"><div><img src="'+user.avatar_url+'"></td><td><h2><a href="http://'+pdjs_settings.subdomain+'.pagerduty.com/users/'+user.id+'">'+user.name+'</a></td></tr><tr><td colspan=2></h2></div><div id="'+user.id+"_contact_methods"+'"><h4>Contact Methods:</h4></div></td></tr><tr><td colspan=2><div id="'+user.id+"_on_call"+'"</div></td></tr></table></td></tr></table><br>'
-        )
-        if(!user.contact_methods.length) {
-          $("#"+user.id+"_contact_methods").append("<li><font color=red>No contact methods</font></li>")
-        }
-        else {
-          jQuery.each(user.contact_methods, function(index,contact_method){
-            if(contact_method.type == "email") {
-              $("#"+user.id+"_contact_methods").append('<li><strong>Email:</strong> <a href="mailto:'+contact_method.email+'">'+contact_method.email+'</a> ('+contact_method.label+')</li>')
-            }
-            else if (contact_method.type == "phone") {
-              $("#"+user.id+"_contact_methods").append('<li><strong>Phone:</strong> +'+contact_method.country_code+' '+contact_method.address+' ('+contact_method.label+')</li>')
-            }
-          })
-        }
-        jQuery.each(user.on_call, function(index,shift){
-          $("#"+user.id+"_on_call").append(
-            '<h4><a href="http://'+pdjs_settings.subdomain+'.pagerduty.com/escalation_policies#'+shift.escalation_policy.id+'">'+shift.escalation_policy.name+'</a></h4><span class="badge">'+shift.level+'</span>'
-          )
-          if(shift.start == null) {
-            $("#"+user.id+"_on_call").append(' Always on-call')
-          }
-          else {
-            var start = new Date(shift.start)
-            var end = new Date(shift.end)
-            $("#"+user.id+"_on_call").append(' '+format_date(start)+' - '+format_date(end))
-          }
-        })
-      })
-    }
-  })
+.dbinfo_header {
+	font-size: 36px;
+	font-weight: bold;
+	color: green;
 }
-
-$(function(){
-  PDJS = new PDJSobj(pdjs_settings)
-  update_users()
-})
-</script>
+.dbinfo_header2 {
+	font-size: 24px;
+	font-weight: bold;
+	color: green;
+}
+.dbinfo_header3 {
+	font-size: 18px;
+	font-weight: bold;
+}
+body {
+	background-color: transparent; 
+}
+.auto-style1 {
+	margin-top: 0px;
+}
+</style>
 <title>PagerDuty On-Call</title>
 </head>
+<h1>On Call Schedule</h1>
 <body>
   <div class="container">
     <div class="row">
